@@ -213,9 +213,9 @@
     position: relative;
     z-index: 4;
     width: 100%;
-    max-width: 600px;
+    max-width: 500px;
     margin-top: auto;
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
     opacity: 0;
     transition: opacity 1.4s cubic-bezier(.16,.9,.3,1);
@@ -228,33 +228,35 @@
   #reveal-info {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    background: rgba(5, 3, 10, 0.8);
-    padding: 24px;
+    gap: 12px;
+    background: rgba(5, 3, 10, 0.85);
+    padding: 16px;
     border-radius: 12px;
     backdrop-filter: blur(12px);
     border: 1px solid rgba(91, 60, 196, 0.3);
     text-align: left;
+    max-width: 90vw;
+    width: auto;
   }
   
   #reveal-info .eyebrow {
     font-family: 'Oswald', sans-serif;
     font-size: 10px;
     letter-spacing: 3px;
-    color: var(--purple-bright);
+    color: var(--muted);
   }
   
   #reveal-info h2 {
     font-family: 'Metal Mania', cursive;
-    font-size: 2rem;
+    font-size: 1.6rem;
     color: var(--lightning-core);
-    text-shadow: 0 0 16px rgba(91, 60, 196, 0.7);
+    text-shadow: 0 0 12px rgba(91, 60, 196, 0.7);
   }
   
   #reveal-info .row {
     display: flex;
-    gap: 14px;
-    padding: 10px 0;
+    gap: 10px;
+    padding: 8px 0;
     border-bottom: 1px dashed rgba(221, 206, 163, 0.2);
   }
   
@@ -263,8 +265,8 @@
   }
   
   #reveal-info .row .ico {
-    font-size: 1.25rem;
-    width: 26px;
+    font-size: 1.1rem;
+    width: 24px;
     text-align: center;
   }
   
@@ -301,12 +303,23 @@
     
     #reveal-content {
       margin-top: auto;
-      padding: 16px;
+      padding: 8px;
+      max-width: 95vw;
     }
     
     #reveal-info {
       width: 100%;
       max-width: 100%;
+      padding: 12px;
+      font-size: 0.9rem;
+    }
+    
+    #reveal-info h2 {
+      font-size: 1.4rem;
+    }
+    
+    #reveal-info .row .txt span {
+      font-size: 0.9rem;
     }
     
     #meter { right: 10px; gap: 6px; }
