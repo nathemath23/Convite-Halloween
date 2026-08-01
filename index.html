@@ -168,7 +168,7 @@
   }
 
   /* reveal */
-  #s4 {
+  #s3 {
     position: relative;
     min-height: 100vh;
     display: flex;
@@ -177,7 +177,7 @@
     justify-content: center;
   }
   
-  #s4 img {
+  #s3 img {
     position: absolute;
     top: 0;
     left: 0;
@@ -313,7 +313,6 @@
     <div class="dot" data-i="1"></div>
     <div class="dot" data-i="2"></div>
     <div class="dot" data-i="3"></div>
-    <div class="dot" data-i="4"></div>
   </div>
   <div class="stage-name" id="stage-name">DISTANTE</div>
 </div>
@@ -337,11 +336,6 @@
   </div>
 
   <div class="page" id="s3">
-    <div class="stage-tag">03 · O LIMIAR</div>
-    <p class="stage-line">A música já não é só som — é presença. Algo está se formando entre a estática e a luz.</p>
-  </div>
-
-  <div class="page" id="s4">
     <img src="sinapse-volt.png" alt="Synapse Volt, o Condutor da Tempestade">
     <div id="reveal-content">
       <div id="reveal-info">
@@ -372,7 +366,6 @@
 <audio id="trackA" src="parte1.mp3" preload="auto" playsinline loop></audio>
 <audio id="trackB" src="parte2.mp3" preload="auto" playsinline loop></audio>
 <audio id="trackC" src="parte3.mp3" preload="auto" playsinline loop></audio>
-<audio id="trackD" src="parte4.mp3" preload="auto" playsinline loop></audio>
 
 <script>
 (function(){
@@ -381,11 +374,11 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Pages and navigation
-  const pages = ['s0', 's1', 's2', 's3', 's4'];
+  const pages = ['s0', 's1', 's2', 's3'];
   let currentPage = 0;
   let isTransitioning = false;
 
-  const tracks = ['trackA', 'trackB', 'trackC', 'trackD'].map(id => document.getElementById(id));
+  const tracks = ['trackA', 'trackB', 'trackC'].map(id => document.getElementById(id));
   tracks.forEach(t => { t.volume = 0; t.loop = true; });
 
   // UI elements
@@ -393,7 +386,7 @@
   const meterEl = document.getElementById('meter');
   const stageNameEl = document.getElementById('stage-name');
   const dots = document.querySelectorAll('#meter .dot');
-  const stageNames = ['DISTANTE', 'SE APROXIMANDO', 'QUASE AQUI', 'NO LIMIAR', 'AQUI'];
+  const stageNames = ['DISTANTE', 'SE APROXIMANDO', 'QUASE AQUI', 'NO LIMIAR'];
   const revealContent = document.getElementById('reveal-content');
 
   // Lightning canvas
@@ -475,7 +468,7 @@
         t.volume = (i === 0) ? 1 : 0;
       } else if (currentPage === 2) {
         t.volume = (i === 0 || i === 1) ? 1 : 0;
-      } else {
+      } else if (currentPage === 3) {
         t.volume = 1;
       }
     });
@@ -503,7 +496,7 @@
       updateAudio();
       updateMeter();
 
-      if (currentPage === 4) {
+      if (currentPage === 3) {
         setTimeout(() => {
           revealContent.classList.add('in');
         }, 3000);
