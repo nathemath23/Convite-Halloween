@@ -168,7 +168,7 @@
   }
 
   /* reveal */
-  #s3 {
+  #s4 {
     position: relative;
     min-height: 100vh;
     display: flex;
@@ -177,7 +177,7 @@
     justify-content: center;
   }
   
-  #s3 img {
+  #s4 img {
     position: absolute;
     top: 0;
     left: 0;
@@ -313,6 +313,7 @@
     <div class="dot" data-i="1"></div>
     <div class="dot" data-i="2"></div>
     <div class="dot" data-i="3"></div>
+    <div class="dot" data-i="4"></div>
   </div>
   <div class="stage-name" id="stage-name">DISTANTE</div>
 </div>
@@ -336,6 +337,11 @@
   </div>
 
   <div class="page" id="s3">
+    <div class="stage-tag">03 · O LIMIAR</div>
+    <p class="stage-line">A música já não é só som — é presença. Algo está se formando entre a estática e a luz.</p>
+  </div>
+
+  <div class="page" id="s4">
     <img src="sinapse-volt.png" alt="Synapse Volt, o Condutor da Tempestade">
     <div id="reveal-content">
       <div id="reveal-info">
@@ -374,7 +380,7 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Pages and navigation
-  const pages = ['s0', 's1', 's2', 's3'];
+  const pages = ['s0', 's1', 's2', 's3', 's4'];
   let currentPage = 0;
   let isTransitioning = false;
 
@@ -386,7 +392,7 @@
   const meterEl = document.getElementById('meter');
   const stageNameEl = document.getElementById('stage-name');
   const dots = document.querySelectorAll('#meter .dot');
-  const stageNames = ['DISTANTE', 'SE APROXIMANDO', 'QUASE AQUI', 'NO LIMIAR'];
+  const stageNames = ['DISTANTE', 'SE APROXIMANDO', 'QUASE AQUI', 'NO LIMIAR', 'AQUI'];
   const revealContent = document.getElementById('reveal-content');
 
   // Lightning canvas
@@ -419,7 +425,7 @@
     }
     ctx.strokeStyle = `rgba(234,243,255,${alpha})`;
     ctx.lineWidth = 1.4 + generation * 0.5;
-    ctx.shadowColor = '#000000';
+    ctx.shadowColor = '#5b3cc4';
     ctx.shadowBlur = 18 + generation * 4;
     ctx.stroke();
   }
@@ -468,7 +474,8 @@
         t.volume = (i === 0) ? 1 : 0;
       } else if (currentPage === 2) {
         t.volume = (i === 0 || i === 1) ? 1 : 0;
-      } else if (currentPage === 3) {
+      } else {
+        // Páginas 3 e 4: todas as faixas em 100%
         t.volume = 1;
       }
     });
@@ -496,7 +503,7 @@
       updateAudio();
       updateMeter();
 
-      if (currentPage === 3) {
+      if (currentPage === 4) {
         setTimeout(() => {
           revealContent.classList.add('in');
         }, 3000);
