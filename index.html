@@ -10,8 +10,8 @@
 <style>
   :root{
     --bg:#000000;
-    --bg2:#020103;
-    --purple-deep:#050108;
+    --bg2:#000000;
+    --purple-deep:#000000;
     --purple:#2d1b4e;
     --purple-bright:#5b3cc4;
     --lightning:#eaf3ff;
@@ -43,7 +43,7 @@
   #lightning-canvas{
     position:fixed; inset:0; width:100vw; height:100vh;
     z-index:0; pointer-events:none;
-    background: radial-gradient(ellipse at 50% 20%, var(--purple-deep) 0%, var(--bg2) 45%, var(--bg) 100%);
+    background: var(--bg);
   }
 
   #flash{
@@ -76,75 +76,18 @@
     writing-mode:vertical-rl; text-transform:uppercase; opacity:.85;
   }
 
-  /* ---------- controls ---------- */
-  .controls {
+  /* Back button */
+  #back-btn {
     position: fixed;
     top: 18px;
-    left: 18px;
+    right: 18px;
     z-index: 21;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    opacity: 0;
-    transition: opacity .6s ease;
-  }
-  .controls.show {
-    opacity: 1;
-  }
-
-  #mute{
     background:rgba(5,3,10,.6); border:1px solid var(--purple-bright); color:var(--lightning);
     font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:2px;
     padding:8px 12px; border-radius:20px; cursor:pointer; backdrop-filter:blur(4px);
+    opacity:0; transition:opacity .6s ease;
   }
-
-  #back-btn {
-    background:rgba(5,3,10,.6); border:1px solid var(--purple-bright); color:var(--lightning);
-    font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:2px;
-    padding:8px 12px; border-radius:20px; cursor:pointer; backdrop-filter:blur(4px);
-  }
-
-  .volume-control {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(5,3,10,.6);
-    padding: 6px 12px;
-    border-radius: 20px;
-    backdrop-filter: blur(4px);
-    border: 1px solid var(--purple-bright);
-  }
-
-  .volume-control input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 80px;
-    height: 4px;
-    background: rgba(91,60,196,0.4);
-    border-radius: 2px;
-    outline: none;
-  }
-
-  .volume-control input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 14px;
-    height: 14px;
-    background: var(--purple-bright);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 8px var(--purple-bright);
-  }
-
-  .volume-control input[type="range"]::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
-    background: var(--purple-bright);
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-    box-shadow: 0 0 8px var(--purple-bright);
-  }
+  #back-btn.show{opacity:1;}
 
   /* ---------- sections ---------- */
   main {
@@ -226,6 +169,7 @@
 
   /* reveal */
   #s4 {
+    position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -234,24 +178,21 @@
   }
   
   #s4 img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     z-index: 1;
   }
   
   #reveal-content {
     position: relative;
     z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
     width: 100%;
-    height: 100%;
+    max-width: 600px;
+    margin-top: auto;
     padding: 20px;
     box-sizing: border-box;
     opacity: 0;
@@ -266,9 +207,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-width: 500px;
-    margin: 0 auto;
-    background: rgba(5, 3, 10, 0.7);
+    background: rgba(5, 3, 10, 0.8);
     padding: 24px;
     border-radius: 12px;
     backdrop-filter: blur(12px);
@@ -341,21 +280,18 @@
     }
     
     #reveal-content {
-      justify-content: flex-end;
+      margin-top: auto;
       padding: 16px;
     }
     
     #reveal-info {
       width: 100%;
       max-width: 100%;
-      margin-top: auto;
     }
     
     #meter { right: 10px; gap: 6px; }
     #meter .dot { width: 9px; height: 9px; }
-    .controls { gap: 6px; }
-    .volume-control { padding: 4px 8px; }
-    .volume-control input[type="range"] { width: 60px; }
+    #back-btn { right: 10px; padding: 8px 10px; font-size: 10px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -370,14 +306,7 @@
 <div id="flash"></div>
 <div id="grain"></div>
 
-<div class="controls">
-  <button id="mute" class="label">🔊 Som ligado</button>
-  <button id="back-btn" class="label">↩ Voltar</button>
-  <div class="volume-control">
-    <span style="font-family: 'Oswald', sans-serif; font-size: 10px; color: var(--lightning);">🔈</span>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
-  </div>
-</div>
+<button id="back-btn" class="label">↩ Voltar</button>
 
 <div id="meter">
   <div class="dots">
@@ -465,8 +394,6 @@
   const stageNameEl = document.getElementById('stage-name');
   const dots = document.querySelectorAll('#meter .dot');
   const stageNames = ['DISTANTE', 'SE APROXIMANDO', 'QUASE AQUI', 'NO LIMIAR', 'AQUI'];
-  const controls = document.querySelector('.controls');
-  const volumeSlider = document.getElementById('volume-slider');
   const revealContent = document.getElementById('reveal-content');
 
   // Lightning canvas
@@ -505,14 +432,13 @@
   }
 
   let lastFrame = 0;
-  let globalVolume = 1;
 
   function loop(t) {
     requestAnimationFrame(loop);
     if (t - lastFrame < 33) return;
     lastFrame = t;
 
-    ctx.fillStyle = 'rgba(5,3,10,0.45)';
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
     ctx.fillRect(0, 0, W, H);
 
     const spawnChance = 0.02 + currentPage * 0.05;
@@ -525,7 +451,6 @@
 
   // Audio
   let actx;
-  let muted = false;
   let audioStarted = false;
 
   function initAudio() {
@@ -538,22 +463,20 @@
       if (p && p.catch) p.catch(() => {});
     });
     meterEl.classList.add('show');
-    controls.classList.add('show');
+    backBtn.classList.add('show');
     updateAudio();
   }
 
   function updateAudio() {
-    const effectiveVolume = muted ? 0 : globalVolume;
-    
     tracks.forEach((t, i) => {
       if (currentPage === 0) {
         t.volume = 0;
       } else if (currentPage === 1) {
-        t.volume = (i === 0) ? effectiveVolume : 0;
+        t.volume = (i === 0) ? 1 : 0;
       } else if (currentPage === 2) {
-        t.volume = (i === 0 || i === 1) ? effectiveVolume : 0;
+        t.volume = (i === 0 || i === 1) ? 1 : 0;
       } else {
-        t.volume = effectiveVolume;
+        t.volume = 1;
       }
     });
   }
@@ -604,7 +527,7 @@
   });
 
   document.addEventListener('click', (e) => {
-    if (e.target.closest('button') || e.target.closest('.controls')) {
+    if (e.target.closest('button') || e.target.closest('#back-btn')) {
       return;
     }
     if (!audioStarted) {
@@ -621,54 +544,6 @@
       goToPage(currentPage + 1);
     }
   });
-
-  document.getElementById('mute').addEventListener('click', function() {
-    muted = !muted;
-    this.textContent = muted ? '🔇 Som desligado' : '🔊 Som ligado';
-    updateAudio();
-  });
-
-  volumeSlider.addEventListener('input', function() {
-    globalVolume = parseFloat(this.value);
-    updateAudio();
-  });
-
-  // Flash effect
-  const flashEl = document.getElementById('flash');
-  function flashScreen(peak) {
-    flashEl.style.transition = 'none';
-    flashEl.style.opacity = peak;
-    requestAnimationFrame(() => {
-      flashEl.style.transition = 'opacity .35s ease-out';
-      flashEl.style.opacity = 0;
-    });
-  }
-
-  // Thunder crack sound - longer and quieter
-  function thunderCrack() {
-    if (!actx) return;
-    const now = actx.currentTime;
-    
-    const bufferSize = actx.sampleRate * 1.5;
-    const buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
-    const data = buffer.getChannelData(0);
-    
-    for (let i = 0; i < bufferSize; i++) {
-      const t = i / bufferSize;
-      const freq = 80 + Math.sin(t * Math.PI * 0.5) * 20;
-      const amp = (1 - t) * 0.3 * (0.5 + Math.random() * 0.5);
-      data[i] = Math.sin(t * Math.PI * 2 * freq) * amp * (muted ? 0 : 1) * globalVolume;
-    }
-    
-    const src = actx.createBufferSource();
-    src.buffer = buffer;
-    const lp = actx.createBiquadFilter();
-    lp.type = 'lowpass'; lp.frequency.value = 800;
-    const g = actx.createGain();
-    g.gain.setValueAtTime(muted ? 0 : 0.3 * globalVolume, now);
-    src.connect(lp); lp.connect(g); g.connect(actx.destination);
-    src.start(now);
-  }
 
   // Initialize
   updateMeter();
