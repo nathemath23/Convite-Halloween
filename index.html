@@ -39,11 +39,43 @@
   .brush{font-family:'Metal Mania', cursive; letter-spacing:1px;}
   .label{font-family:'Oswald',sans-serif; letter-spacing:3px; text-transform:uppercase;}
 
-  /* ---------- fixed background layers ---------- */
+  /* Camada 0: Fundo preto (em todo o app) */
+  #black-bg {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    background: var(--bg);
+  }
+
+  /* Camada 1: Imagem Synapse Volt (só na última tela) */
+  #synapse-bg {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none;
+  }
+  
+  #synapse-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  #synapse-bg.show {
+    opacity: 1;
+  }
+
+  /* Camada 2: Raios (canvas) */
   #lightning-canvas{
     position:fixed; inset:0; width:100vw; height:100vh;
-    z-index:0; pointer-events:none;
-    background: var(--bg);
+    z-index:2; pointer-events:none;
+    background: transparent;
   }
 
   #flash{
@@ -92,7 +124,7 @@
   /* ---------- sections ---------- */
   main {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     height: 100vh;
   }
 
@@ -177,19 +209,9 @@
     justify-content: center;
   }
   
-  #s4 img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    z-index: 1;
-  }
-  
   #reveal-content {
     position: relative;
-    z-index: 2;
+    z-index: 4;
     width: 100%;
     max-width: 600px;
     margin-top: auto;
@@ -297,10 +319,17 @@
   @media (prefers-reduced-motion: reduce){
     .page { transition-duration: 0.2s; }
     #reveal-content { transition-duration: 0.2s; }
+    #synapse-bg { transition-duration: 0.2s; }
   }
 </style>
 </head>
 <body>
+
+<div id="black-bg"></div>
+
+<div id="synapse-bg">
+  <img src="sinapse-volt.png" alt="Synapse Volt, o Condutor da Tempestade">
+</div>
 
 <canvas id="lightning-canvas"></canvas>
 <div id="flash"></div>
@@ -342,7 +371,6 @@
   </div>
 
   <div class="page" id="s4">
-    <img src="sinapse-volt.png" alt="Synapse Volt, o Condutor da Tempestade">
     <div id="reveal-content">
       <div id="reveal-info">
         <div class="eyebrow">VOCÊ ESTÁ OFICIALMENTE CONVOCADO(A)</div>
@@ -394,6 +422,7 @@
   const dots = document.querySelectorAll('#meter .dot');
   const stageNames = ['DISTANTE', 'SE APROXIMANDO', 'QUASE AQUI', 'NO LIMIAR', 'AQUI'];
   const revealContent = document.getElementById('reveal-content');
+  const synapseBg = document.getElementById('synapse-bg');
 
   // Lightning canvas
   const canvas = document.getElementById('lightning-canvas');
@@ -437,8 +466,8 @@
     if (t - lastFrame < 33) return;
     lastFrame = t;
 
-    ctx.fillStyle = 'rgba(0,0,0,0.45)';
-    ctx.fillRect(0, 0, W, H);
+    // Limpa com transparência total (sem fundo)
+    ctx.clearRect(0, 0, W, H);
 
     const spawnChance = 0.02 + currentPage * 0.05;
     if (Math.random() < spawnChance) {
@@ -503,10 +532,14 @@
       updateAudio();
       updateMeter();
 
+      // Mostra a imagem do Synapse Volt na última página
       if (currentPage === 4) {
+        synapseBg.classList.add('show');
         setTimeout(() => {
           revealContent.classList.add('in');
         }, 3000);
+      } else {
+        synapseBg.classList.remove('show');
       }
 
       isTransitioning = false;
