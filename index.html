@@ -52,19 +52,25 @@
   /* Camada 1: Imagem Synapse Volt (só na última tela) */
   #synapse-bg {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     z-index: 1;
     opacity: 0;
     transition: opacity 1s ease;
     pointer-events: none;
+    overflow: hidden;
   }
   
   #synapse-bg img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    min-height: 100vh;
   }
   
   #synapse-bg.show {
@@ -336,6 +342,15 @@
   }
   
   @media (max-width: 480px) {
+    #synapse-bg {
+      height: 100vh;
+    }
+    
+    #synapse-bg img {
+      height: 100vh;
+      min-height: 100vh;
+    }
+    
     #reveal-content {
       width: 98%;
       padding: 8px;
