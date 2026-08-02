@@ -58,7 +58,8 @@
     height: 100vh;
     z-index: 1;
     opacity: 0;
-    transition: opacity 1s ease;
+    transform: scale(0.95);
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
     overflow: hidden;
   }
@@ -75,6 +76,7 @@
   
   #synapse-bg.show {
     opacity: 1;
+    transform: scale(1);
   }
 
   /* Camada 2: Raios (canvas) */
@@ -589,12 +591,17 @@
 
       // Mostra a imagem do Synapse Volt na última página
       if (currentPage === 4) {
-        synapseBg.classList.add('show');
+        // Sequência: 2s com raios + fundo preto, depois imagem aparece, depois 2s, depois modal
+        setTimeout(() => {
+          synapseBg.classList.add('show');
+        }, 2000); // 2 segundos com raios e fundo preto
+        
         setTimeout(() => {
           revealContent.classList.add('in');
-        }, 3000);
+        }, 4000); // 2 segundos após a imagem aparecer (total: 4s)
       } else {
         synapseBg.classList.remove('show');
+        revealContent.classList.remove('in');
       }
 
       isTransitioning = false;
